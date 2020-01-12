@@ -22,9 +22,12 @@ const USDInput = props => {
       <Input
         id="usd-amount"
         type="number"
-        required
-        min="0"
-        step="any"
+        inputProps={{ 
+          'aria-label': 'usd-amount',
+          required: true,
+          min: 0,
+          step: "any"
+        }} 
         value={amount}
         onChange={onChange}
         startAdornment={<InputAdornment position="start">USD</InputAdornment>}
