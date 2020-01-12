@@ -1,0 +1,60 @@
+import { currencies } from "../config";
+
+const initAmount = 10.0;
+const initCurrencies = ["IDR", "GBP", "SGD"];
+const initRates = currencies.reduce((acc, cur) => {
+  acc[cur] = 0;
+  return acc;
+}, {});
+
+const initState = {
+  amount: initAmount,
+  currencies: initCurrencies,
+  rates: initRates
+};
+
+const SET_AMOUNT = "SET_AMOUNT";
+const SET_RATES = "SET_RATES";
+const REMOVE_CURRENCY = "REMOVE_CURRENCY";
+const ADD_CURRENCY = "ADD_CURRENCY";
+
+const reducer = (state, action) => {
+  if (action.type === SET_AMOUNT) {
+    return {
+      ...state,
+      amount: action.payload
+    };
+  }
+
+  if (action.type === ADD_CURRENCY) {
+    return {
+      ...state,
+      currencies: state.currencies.concat(action.payload)
+    };
+  }
+
+  if (action.type === REMOVE_CURRENCY) {
+    return {
+      ...state,
+      currencies: state.currencies.filter(cur => cur !== action.payload)
+    };
+  }
+
+  if (action.type === SET_RATES) {
+    return {
+      ...state,
+      rates: action.payload
+    };
+  }
+
+  throw Error("Action Type not valid");
+};
+
+export default {
+  initState,
+  SET_AMOUNT,
+  ADD_CURRENCY,
+  REMOVE_CURRENCY,
+  SET_RATES,
+  reducer
+};
