@@ -1,26 +1,16 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 
-import { AddCurrency, CurrencyItem, USDInput } from "./components";
-import {
-  currencies as allCurrenciesOptions,
-  currenciesDescription
-} from "./config";
-import { currencyReducer } from "./reducers";
+import { AddCurrency, ListCurrencies, USDInput } from "./components";
+import { CurrencyContext } from "./contexts";
+import { currencyActionTypes } from "./actions";
 import { getRates } from "./helpers";
 
 import "./App.css";
 
-const {
-  initState,
-  reducer,
-  SET_AMOUNT,
-  SET_RATES,
-  ADD_CURRENCY,
-  REMOVE_CURRENCY
-} = currencyReducer;
+const { SET_RATES } = currencyActionTypes;
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initState);
+  const { dispatch } = useContext(CurrencyContext);
 
   useEffect(() => {
     getRates(data =>
@@ -29,46 +19,13 @@ function App() {
         payload: data
       })
     );
-  }, []);
-
-  const addCurrency = currency =>
-    dispatch({
-      type: ADD_CURRENCY,
-      payload: currency
-    });
-
-  const removeCurrency = currency =>
-    dispatch({
-      type: REMOVE_CURRENCY,
-      payload: currency
-    });
-
-  const amountChange = event =>
-    dispatch({
-      type: SET_AMOUNT,
-      payload: event.target.value
-    });
-
-  const { amount, currencies, rates } = state;
-
-  const currenciesOptions = allCurrenciesOptions.filter(
-    currency => !currencies.find(cur => cur === currency)
-  );
+  }, [dispatch]);
 
   return (
     <div className="App">
-      <USDInput amount={amount} onChange={amountChange} />
-      {currencies.map(currency => (
-        <CurrencyItem
-          key={currency}
-          code={currency}
-          amount={amount}
-          rate={rates[currency]}
-          description={currenciesDescription[currency]}
-          onRemove={() => removeCurrency(currency)}
-        />
-      ))}
-      <AddCurrency options={currenciesOptions} onAdd={addCurrency} />
+      <USDInput />
+      <ListCurrencies />
+      <AddCurrency />
     </div>
   );
 }

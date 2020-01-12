@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
+
+import { CurrencyContext } from "../contexts";
+import { currencyActionTypes } from "../actions";
+
+const { SET_AMOUNT } = currencyActionTypes;
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -12,9 +17,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const USDInput = props => {
-  const { onChange, amount } = props;
-
+  
   const classes = useStyles();
+  
+  const { state, dispatch } = useContext(CurrencyContext);
+  
+  const onChange = event =>
+    dispatch({
+      type: SET_AMOUNT,
+      payload: event.target.value
+    });
+
+  const { amount } = state;
 
   return (
     <FormControl fullWidth className={classes.margin}>

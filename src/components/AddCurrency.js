@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
+
+import { CurrencyContext } from "../contexts";
+import { currencyActionTypes } from "../actions";
+import { currencies as allCurrenciesOptions } from "../config";
+
+const { ADD_CURRENCY } = currencyActionTypes;
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -21,8 +27,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddCurrency = props => {
-  const { options, onAdd } = props;
   const classes = useStyles();
+  const { state, dispatch } = useContext(CurrencyContext)
   const [currency, setCurrency] = React.useState("");
 
   const handleChange = event => {
@@ -30,9 +36,19 @@ const AddCurrency = props => {
   };
 
   const handleAdd = () => {
-    onAdd(currency);
+    dispatch({
+      type: ADD_CURRENCY,
+      payload: currency
+    });
+
     setCurrency("");
   };
+
+  const { currencies } = state;
+
+  const options = allCurrenciesOptions.filter(
+    currency => !currencies.find(cur => cur === currency)
+  );
 
   return (
     <div className={classes.wrapper}>

@@ -1,4 +1,5 @@
 import { currencies } from "../config";
+import { currencyActionTypes } from "../actions";
 
 const initAmount = 10.0;
 const initCurrencies = ["IDR", "GBP", "SGD"];
@@ -13,10 +14,12 @@ const initState = {
   rates: initRates
 };
 
-const SET_AMOUNT = "SET_AMOUNT";
-const SET_RATES = "SET_RATES";
-const REMOVE_CURRENCY = "REMOVE_CURRENCY";
-const ADD_CURRENCY = "ADD_CURRENCY";
+const {
+  SET_AMOUNT,
+  SET_RATES,
+  REMOVE_CURRENCY,
+  ADD_CURRENCY
+} = currencyActionTypes;
 
 const reducer = (state, action) => {
   if (action.type === SET_AMOUNT) {
@@ -52,9 +55,5 @@ const reducer = (state, action) => {
 
 export default {
   initState,
-  SET_AMOUNT,
-  ADD_CURRENCY,
-  REMOVE_CURRENCY,
-  SET_RATES,
   reducer
 };
