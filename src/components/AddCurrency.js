@@ -4,13 +4,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
-import IconButton from "@material-ui/core/IconButton";
-import AddIcon from "@material-ui/icons/Add";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
+  wrapper: {
+    display: "flex",
+    alignItems: "center"
+  },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120
+    minWidth: 240,
   },
   selectEmpty: {
     marginTop: theme.spacing(2)
@@ -32,11 +35,12 @@ const AddCurrency = props => {
   };
 
   return (
-    <React.Fragment>
+    <div className={classes.wrapper}>
       <FormControl className={classes.formControl}>
-        <InputLabel id="simple-select-label">
-          (+) Add More Currencies
-        </InputLabel>
+        {!currency && (
+          <InputLabel id="simple-select-label">Add More Currencies</InputLabel>
+        )}
+
         <Select
           labelId="simple-select-label"
           id="simple-select"
@@ -44,16 +48,18 @@ const AddCurrency = props => {
           onChange={handleChange}
         >
           {options.map(currency => (
-            <MenuItem value={currency}>{currency}</MenuItem>
+            <MenuItem key={currency} value={currency}>
+              {currency}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
       {currency && (
-        <IconButton onClick={handleAdd}>
-          <AddIcon />
-        </IconButton>
+        <Button onClick={handleAdd}>
+          Submit
+        </Button>
       )}
-    </React.Fragment>
+    </div>
   );
 };
 
