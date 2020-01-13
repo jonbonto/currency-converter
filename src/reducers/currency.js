@@ -50,7 +50,7 @@ const reducer = (state, action) => {
     };
   }
 
-  throw Error("Action Type not valid");
+  throw new Error("Action Type not valid");
 };
 
 export default {
